@@ -52,14 +52,20 @@ pub fn solve() -> Result<(), Box<dyn std::error::Error>> {
         let unwrapped_line: &String = line;
         // Find all occurences of the tokens/keys in the line and map them to their values, return
         // tuple of format (index, decimal_value)
-        let min_digits: Vec<(u32, &u32)> = map_ref.keys()
+        // left_digits contains the first digits of the line
+        // right_digits contains the last digits of the line 
+        // "digit" in this context is a token from str_to_digit_map
+        let left_digits: Vec<(u32, &u32)> = map_ref.keys()
             .filter_map(|token| unwrapped_line.find(token).map(|index| (index as u32, map_ref.get(token).unwrap()))).collect();
-        let max_digits: Vec<(u32, &u32)> = map_ref.keys()
+        let right_digits: Vec<(u32, &u32)> = map_ref.keys()
             .filter_map(|token| unwrapped_line.rfind(token).map(|index| (index as u32, map_ref.get(token).unwrap()))).collect();
-        let min_digit = min_digits.iter().min_by(|&a, &b| a.0.cmp(&b.0)).unwrap().1;
-        let max_digit = max_digits.iter().max_by(|&a, &b| a.0.cmp(&b.0)).unwrap().1;
-        println!("Min digit: {}, Max digit: {}, Line: {}", min_digit, max_digit, line);
-        let calibration_num = min_digit * 10 + max_digit;
+        
+        // get the leftmost and rightmost digit based on the minimum and maximum index at which
+        // they were found, respectively
+        let left_digit = left_digits.iter().min_by(|&a, &b| a.0.cmp(&b.0)).unwrap().1;
+        let right_digit = right_digits.iter().max_by(|&a, &b| a.0.cmp(&b.0)).unwrap().1;
+        //println!("Min digit: {}, Max digit: {}, Line: {}", left_digit, right_digit, line);
+        let calibration_num = left_digit * 10 + right_digit;
         sum += calibration_num;
     }
     

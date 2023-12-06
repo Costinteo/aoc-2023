@@ -1,16 +1,23 @@
 use std::fs;
+use std::io::{self, BufRead, BufReader};
 
-// taken from Stack Overflow
-fn words_by_line<'a>(s: &'a str) -> Vec<Vec<&'a str>> {
-    s.lines().map(|line| {
-        line.split_whitespace().collect()
-    }).collect()
-}
+use crate::util;
+use crate::INPUT_FILEPATH;
 
-pub fn solve() {
-    println!("Hello Day 1!");
-    let contents = fs::read_to_string("res/input_01.txt").unwrap();
-    let lines = words_by_line(&contents);
+pub fn solve() -> Result<(), io::Error> {
+    let input_filename = format!("{}{}.txt", INPUT_FILEPATH, util::get_input_filename(file!()));
 
-    println!("{:?}", lines);
+    println!("Reading [{}]...", input_filename);
+    let file = fs::File::open(input_filename).expect("File not found!");
+    let reader = BufReader::new(file);
+    //println!("Reading [{}]...", input_filename);
+
+    let mut cnt = 0;
+    for _line in reader.lines() {
+        cnt += 1;
+    }
+    
+    println!("Found {:?} lines!", cnt);
+
+    Ok(())
 }

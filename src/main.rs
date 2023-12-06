@@ -1,8 +1,11 @@
 pub mod day01;
 pub mod util;
 
-fn main() {
+const INPUT_FILEPATH: &str = "res/input_";
+
+fn main() -> Result<(), std::io::Error> {
     println!("Hello, world!");
-    //day01::solve();
-    println!("Trimmed filename: {}", util::get_input_filename("day01.rs"))
+    let _ = day01::solve();
+
+    Ok(())
 }

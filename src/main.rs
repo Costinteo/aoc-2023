@@ -1,5 +1,6 @@
 pub mod day01;
 pub mod day02;
+pub mod day03;
 pub mod util;
 
 use std::env;
@@ -15,6 +16,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     match day_num {
         1 => day01::solve().expect("Error!"),
         2 => day02::solve().expect("Error!"),
+        3 => day03::solve().expect("Error!"),
         _ => println!("Day {} not implemented yet!", day_num),
     }
 

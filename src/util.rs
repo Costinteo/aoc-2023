@@ -23,20 +23,32 @@ impl<T: fmt::Display + Copy> Mat<T> {
         }
     }
 
-    pub fn get(&self, row: usize, col: usize) -> Result<&T, MatError>{
-        if row > self.rows || col > self.cols {
+    pub fn get(&self, row: usize, col: usize) -> Result<&T, MatError> {
+        if row >= self.rows || col >= self.cols {
             return Err(MatError::OutOfBounds)
         }
         return Ok(&self.internal_vec[col + self.cols * row]);
     }
 
-    pub fn set(&mut self, row: usize, col: usize, val: T) -> Result<(), MatError>{
-        if row > self.rows || col > self.cols {
+    pub fn set(&mut self, row: usize, col: usize, val: T) -> Result<(), MatError> {
+        if row >= self.rows || col >= self.cols {
             return Err(MatError::OutOfBounds)
         }
         self.internal_vec[col + self.cols * row] = val;
         Ok(())
     }
+
+    pub fn get_slice(&self, row: usize, col_start: usize, col_end: usize) -> Result<Vec<T>, MatError> {
+        if row >= self.rows || col_start >= self.cols || col_end >= self.cols {
+            return Err(MatError::OutOfBounds)
+        }
+        let start = row * self.cols + col_start;
+        let end = row * self.cols + col_end;
+        Ok(self.internal_vec[start..(end + 1)].to_vec())
+    }
+
+    pub fn get_width(&self) -> usize  { self.cols }
+    pub fn get_height(&self) -> usize { self.rows }
 }
 
 impl<T: fmt::Display> fmt::Display for Mat<T> {
